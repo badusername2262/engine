@@ -29,7 +29,7 @@ int main()
 
     sf::SoundBuffer buffer;
 
-    if(!buffer.loadFromFile("C:/Users/GSCrohdea/Desktop/2d_engine/resources/wav/If I Had A Heart - VIKINGS (Norse Folk Metal) Cover (feat. @JohnTheodoreMusic) (320 kbps).wav"))
+    if(!buffer.loadFromFile("C:/Users/alexr/Desktop/engine/resources/wav/If I Had A Heart - VIKINGS (Norse Folk Metal) Cover (feat. @JohnTheodoreMusic) (320 kbps).wav"))
     {
         std::cout << "ERROR" << std::endl;
     }
