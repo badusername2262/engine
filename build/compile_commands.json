@@ -1,0 +1,17 @@
+[
+{
+  "directory": "C:/Users/GSCrohdea/Desktop/2d_engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/engine.dir/includes_CXX.rsp -g -o CMakeFiles\\engine.dir\\main.cpp.obj -c C:\\Users\\GSCrohdea\\Desktop\\2d_engine\\main.cpp",
+  "file": "C:/Users/GSCrohdea/Desktop/2d_engine/main.cpp"
+},
+{
+  "directory": "C:/Users/GSCrohdea/Desktop/2d_engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/engine.dir/includes_CXX.rsp -g -o CMakeFiles\\engine.dir\\src\\Graphics\\window.cpp.obj -c C:\\Users\\GSCrohdea\\Desktop\\2d_engine\\src\\Graphics\\window.cpp",
+  "file": "C:/Users/GSCrohdea/Desktop/2d_engine/src/Graphics/window.cpp"
+},
+{
+  "directory": "C:/Users/GSCrohdea/Desktop/2d_engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/engine.dir/includes_CXX.rsp -g -o CMakeFiles\\engine.dir\\src\\Utils\\camera.cpp.obj -c C:\\Users\\GSCrohdea\\Desktop\\2d_engine\\src\\Utils\\camera.cpp",
+  "file": "C:/Users/GSCrohdea/Desktop/2d_engine/src/Utils/camera.cpp"
+}
+]
