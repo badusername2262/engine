@@ -1,3 +1,0 @@
-C:/Users/GSCrohdea/Desktop/2d_engine/build/CMakeFiles/engine.dir
-C:/Users/GSCrohdea/Desktop/2d_engine/build/CMakeFiles/edit_cache.dir
-C:/Users/GSCrohdea/Desktop/2d_engine/build/CMakeFiles/rebuild_cache.dir
