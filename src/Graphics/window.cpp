@@ -145,5 +145,4 @@ namespace Graphics
     	win->mx = xpos;
     	win->my = ypos;
     }
-
 };

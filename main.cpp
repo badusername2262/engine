@@ -27,17 +27,11 @@ int main()
 	shader.setUniform2f("light_pos", glm::vec2(4.0f, 5.0f));
 	shader.setUniform4f("colour", glm::vec4(0.2f, 0.3f, 0.8f, 1.0f));
 
-    sf::SoundBuffer buffer;
-
-    if(!buffer.loadFromFile("C:/Users/alexr/Desktop/engine/resources/wav/If I Had A Heart - VIKINGS (Norse Folk Metal) Cover (feat. @JohnTheodoreMusic) (320 kbps).wav"))
-    {
+    sf::Music music;
+    if(!music.openFromFile("C:/Users/alexr/Desktop/engine/resources/wav/FINAL STAND - Powerful Dramatic Music _ Dark Battle Orchestral Epic Music Mix - Atom Music Audio (320 kbps).wav"))
         std::cout << "ERROR" << std::endl;
-    }
-
-    sf::Sound Sound;
-	Sound.setBuffer(buffer);
-	Sound.setLoop(true);
-	Sound.play();
+    music.setVolume(50);
+    music.play();
 
     //values for imgui
 	bool show_demo_window = true;
@@ -53,11 +47,12 @@ int main()
 
     //for mouse positioning
     double x, y;
+    float volume = 50;
 
     while (!window.Closed())
     {
         window.Clear();
-        
+
         //stuff to calculate delta time for the fixed update
         nowTime = glfwGetTime();
         deltaTime += (nowTime - lastTime) / limitFPS;
@@ -77,12 +72,14 @@ int main()
         ImGui::Begin("FPS Checker.");
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Text("mouse X:%f, mouse Y:%f", (float)(x * 960.0f / 960.0f), (float)(540.0f - y * 540.0f / 540.0f));
+        ImGui::SliderFloat("Volume", &volume, 0, 100);
         ImGui::End();
 
         //fixed update
         while (deltaTime >= 1.0){
             updates++;
             deltaTime--;
+            music.setVolume(volume);
         }
         //rendering to the screen
 		ImGui::Render();

@@ -7,6 +7,8 @@
 #include <imgui/imgui_impl_glfw.hpp>
 #include <imgui/imgui_impl_opengl3.hpp>
 
+#include <SFML/Audio.hpp>
+
 #include <iostream>
 
 namespace Graphics {
@@ -45,5 +47,4 @@ namespace Graphics {
         friend void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
         friend void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
     };
-
 }
