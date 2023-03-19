@@ -1,1 +1,0 @@
-  -LC:/Users/alexr/Desktop/engine/lib  -lglfw3 -lopengl32 -lglew32 -lImGui -lbox2d -lsfml-audio-d -lsfml-system-d -lFLAC -lfreetype -logg -lopenal32 -lvorbis -lvorbisenc -lvorbisfile -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
