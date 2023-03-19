@@ -10,6 +10,5 @@ in vec4 out_pos;
 
 void main()
 {
-	float intensity = 10.0 / length(out_pos.xy - light_pos);
-	color = out_color * intensity;
+	color = out_color;
 }

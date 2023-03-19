@@ -21,14 +21,50 @@ int main()
     shader.bind();
 	Camera ortho = Camera::Orthographic(0, 960, 0, 540, 0, 100);
 	shader.setUniformMat4("pr_matrix", ortho);
-	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(0, 0, 0)));
+	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(475, 270, 0)));
 
-    //this is to tell the computer to draw a bright circle that fades to black
-	shader.setUniform2f("light_pos", glm::vec2(4.0f, 5.0f));
-	shader.setUniform4f("colour", glm::vec4(0.2f, 0.3f, 0.8f, 1.0f));
 
+    float verticies[] = {
+        -12.5f, -6.5f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+        -6.5f,  -6.5f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+        -6.5f,   6.5f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+        -12.5f,  6.5f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+
+         6.5f,  -6.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
+         12.5f, -6.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
+         12.5f,  6.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
+         6.5f,   6.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f
+    };
+
+    GLuint QuaidVA;
+    GLuint QuaidVB;
+    GLuint QuaidIB;
+
+    glCreateVertexArrays(1, &QuaidVA);
+    glBindVertexArray(QuaidVA);
+
+    glCreateBuffers(1, &QuaidVB);
+    glBindBuffer(GL_ARRAY_BUFFER, QuaidVB);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_STATIC_DRAW);
+
+    glEnableVertexArrayAttrib(QuaidVB, 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+
+    glEnableVertexArrayAttrib(QuaidVB, 1);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (const void*)12);
+
+    uint32_t indices[] = {
+        0, 1, 2, 2, 3, 0,
+        4, 5, 6, 6, 7, 4
+    };
+
+    glCreateBuffers(1, &QuaidIB);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, QuaidIB);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    //Sound
     sf::Music music;
-    if(!music.openFromFile("C:/Users/alexr/Desktop/engine/resources/wav/FINAL STAND - Powerful Dramatic Music _ Dark Battle Orchestral Epic Music Mix - Atom Music Audio (320 kbps).wav"))
+    if(!music.openFromFile("C:/Users/alexr/Desktop/engine/resources/wav/If I Had A Heart - VIKINGS (Norse Folk Metal) Cover (feat. @JohnTheodoreMusic) (320 kbps).wav"))
         std::cout << "ERROR" << std::endl;
     music.setVolume(50);
     music.play();
@@ -64,9 +100,6 @@ int main()
         ImGui::NewFrame();
 
         window.getmouseposition(x, y);
-        
-        //foe the bright light
-        shader.setUniform2f("light_pos", glm::vec2((float)(x * 960.0f / 960.0f), (float)(540.0f - y * 540.0f / 540.0f)));
 
         //ImGui box which makes the inner window
         ImGui::Begin("FPS Checker.");
@@ -74,6 +107,11 @@ int main()
         ImGui::Text("mouse X:%f, mouse Y:%f", (float)(x * 960.0f / 960.0f), (float)(540.0f - y * 540.0f / 540.0f));
         ImGui::SliderFloat("Volume", &volume, 0, 100);
         ImGui::End();
+
+        shader.bind();
+        glBindVertexArray(QuaidVA);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+        shader.unbind();
 
         //fixed update
         while (deltaTime >= 1.0){
