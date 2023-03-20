@@ -2,6 +2,7 @@
 
 layout (location = 0) in vec4 position;
 layout (location = 1) in vec4 colour;
+layout (location = 2) in vec2 TexCoord;
 
 uniform mat4 pr_matrix;
 uniform mat4 vw_matrix = mat4(1.0);
@@ -9,10 +10,12 @@ uniform mat4 ml_matrix = mat4(1.0);
 
 out vec4 out_color;
 out vec4 out_pos;
+out vec2 out_TexCoord;
 
 void main()
 {
 	out_pos = ml_matrix * position;
 	out_color = colour;
+	TexCoord = out_TexCoord;
 	gl_Position = pr_matrix * vw_matrix * ml_matrix * position;
 }

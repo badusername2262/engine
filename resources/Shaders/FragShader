@@ -7,8 +7,9 @@ uniform vec2 light_pos;
 
 in vec4 out_color;
 in vec4 out_pos;
+in vec2 out_TexCoord
 
 void main()
 {
-	color = out_color;
+	color = vec4(out_TexCoord, 0.0, 1.0);
 }
