@@ -23,6 +23,7 @@ namespace Graphics {
         GLint getUniformLocation(const GLchar* name) { return glGetUniformLocation(shaderID, name); }
 
         void setUniform1i(const GLchar* name, int value) { glUniform1i(getUniformLocation(name), value); }
+        void setUnuform1iV(const GLint location, GLsizei count, const GLint *value)
         void setUniform1f(const GLchar* name, float value) { glUniform1f(getUniformLocation(name), value); }
         void setUniform2f(const GLchar* name, const glm::vec2& vector) { glUniform2f(getUniformLocation(name), vector.x, vector.y); }
         void setUniform3f(const GLchar* name, const glm::vec3& vector) { glUniform3f(getUniformLocation(name), vector.x, vector.y, vector.z); }
