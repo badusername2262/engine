@@ -19,23 +19,23 @@ int main()
     //creation of shaders and projection matrix
     Shader shader("../resources/Shaders/VertShader", "../resources/Shaders/FragShader");
     shader.bind();
-	Camera ortho = Camera::Orthographic(0, 16, 0, 9, 0, 100);
+	Camera ortho = Camera::Orthographic(0, 960, 0, 520, 0, 100);
 	shader.setUniformMat4("pr_matrix", ortho);
-	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(4, 3, 0)));
+	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(480, 270, 0)));
     auto loc = shader.getUniformLocation("u_Textures");
     int samplers[2] = {0, 1};
     shader.setUnuform1iV(loc, 2, samplers);
 
     float verticies[] = {
-        -1.5f, -0.5f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 1.0f, 0.0f,
-        -1.5f,  0.5f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -200.0f, -100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 0.0f, 0.0f,
+        -0.0f, -100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.0f,  100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 1.0f, 0.0f,
+        -200.0f,  100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 1.0f, 0.0f,
 
-         0.5f, -0.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 0.0f, 1.0f,
-         1.5f, -0.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 0.0f, 1.0f,
-         1.5f,  0.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 1.0f, 1.0f,
-         0.5f,  0.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 1.0f, 1.0f
+         0.5f, -5.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 0.0f, 1.0f,
+         20.5f, -5.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 0.0f, 1.0f,
+         20.5f,  5.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  5.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 1.0f, 1.0f
     };
 
     GLuint QuaidVA;
@@ -75,7 +75,7 @@ int main()
 
     //Sound
     sf::Music music;
-    if(!music.openFromFile("C:/engine/resources/wav/If I Had A Heart - VIKINGS (Norse Folk Metal) Cover (feat. @JohnTheodoreMusic) (320 kbps).wav"))
+    if(!music.openFromFile("C:/engine/resources/wav/Royalty Free Music Background Music Chill No Copyright Music Free To Use _ Unisho Reason - Z8phyR (320 kbps).wav"))
         std::cout << "ERROR" << std::endl;
     music.setVolume(50);
     music.setLoop(true);
