@@ -22,8 +22,9 @@ int main()
 	Camera ortho = Camera::Orthographic(0, 16, 0, 9, 0, 100);
 	shader.setUniformMat4("pr_matrix", ortho);
 	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(4, 3, 0)));
-    shader.getUniformLocation("u_Textures");
+    auto loc = shader.getUniformLocation("u_Textures");
     int samplers[2] = {0, 1};
+    shader.setUnuform1iV(loc, 2, samplers);
 
     float verticies[] = {
         -1.5f, -0.5f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -69,8 +70,8 @@ int main()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, QuaidIB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    GLuint smile = Utils::LoadTexture("resources/textures/smile.png");
-    GLuint smile2 = Utils::LoadTexture("resources/textures/smile2.png");
+    GLuint smile = Utils::LoadTexture("c:/engine/resources/textures/smile.png");
+    GLuint smile2 = Utils::LoadTexture("c:/engine/resources/textures/smile2.png");
 
     //Sound
     sf::Music music;
