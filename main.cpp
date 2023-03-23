@@ -13,15 +13,19 @@ using namespace Graphics;
 int main() 
 {
     //creating the window
-    Window window("title", 960, 540);
+    Window window("title", 1920, 1080);
     glClearColor(1.0, 1.0, 1.0, 1.0);
 
     //creation of shaders and projection matrix
     Shader shader("../resources/Shaders/VertShader", "../resources/Shaders/FragShader");
     shader.bind();
-	Camera ortho = Camera::Orthographic(0, 960, 0, 520, 0, 100);
+	Camera ortho = Camera::Orthographic(0, 960, 0, 520, 0, 1);
 	shader.setUniformMat4("pr_matrix", ortho);
 	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(480, 270, 0)));
+    
+    GLuint smile = Utils::LoadTexture("c:/engine/resources/textures/ahhh.jpg");
+    GLuint smile2 = Utils::LoadTexture("c:/engine/resources/textures/smile2.png");
+    
     auto loc = shader.getUniformLocation("u_Textures");
     int samplers[2] = {1, 0};
     shader.setUnuform1iV(loc, 2, samplers);
@@ -47,7 +51,7 @@ int main()
 
     glCreateBuffers(1, &QuaidVB);
     glBindBuffer(GL_ARRAY_BUFFER, QuaidVB);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_DYNAMIC_DRAW);
 
     glEnableVertexArrayAttrib(QuaidVB, 0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), 0);
@@ -70,14 +74,12 @@ int main()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, QuaidIB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    GLuint smile = Utils::LoadTexture("c:/engine/resources/textures/smile.png");
-    GLuint smile2 = Utils::LoadTexture("c:/engine/resources/textures/smile2.png");
 
     //Sound
     sf::Music music;
     if(!music.openFromFile("C:/engine/resources/wav/Royalty Free Music Background Music Chill No Copyright Music Free To Use _ Unisho Reason - Z8phyR (320 kbps).wav"))
         std::cout << "ERROR" << std::endl;
-    music.setVolume(50);
+    music.setVolume(0);
     music.setLoop(true);
     music.play();
 
