@@ -14,7 +14,7 @@ int main()
 {
     //creating the window
     Window window("title", 960, 540);
-    glClearColor(0.2, 0.3, 0.8, 1.0);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
 
     //creation of shaders and projection matrix
     Shader shader("../resources/Shaders/VertShader", "../resources/Shaders/FragShader");
@@ -23,19 +23,19 @@ int main()
 	shader.setUniformMat4("pr_matrix", ortho);
 	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(480, 270, 0)));
     auto loc = shader.getUniformLocation("u_Textures");
-    int samplers[2] = {0, 1};
+    int samplers[2] = {1, 0};
     shader.setUnuform1iV(loc, 2, samplers);
 
     float verticies[] = {
-        -200.0f, -100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 0.0f, 0.0f,
-        -0.0f, -100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 0.0f, 0.0f,
-        -0.0f,  100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 1.0f, 0.0f,
-        -200.0f,  100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -250.0f, -100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 0.0f, 0.0f,
+        -50.0f, -100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -50.0f,  100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 1.0f, 0.0f,
+        -250.0f,  100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 1.0f, 0.0f,
 
-         0.5f, -5.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 0.0f, 1.0f,
-         20.5f, -5.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 0.0f, 1.0f,
-         20.5f,  5.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 1.0f, 1.0f,
-         0.5f,  5.5f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 1.0f, 1.0f
+         50.0f, -100.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 0.0f, 1.0f,
+         250.0f, -100.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 0.0f, 1.0f,
+         250.0f,  100.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 1.0f, 1.0f,
+         50.0f,  100.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 1.0f, 1.0f
     };
 
     GLuint QuaidVA;
@@ -95,7 +95,7 @@ int main()
 
     //for mouse positioning
     double x, y;
-    float volume = 50;
+    float volume = 0;
 
     while (!window.Closed())
     {
