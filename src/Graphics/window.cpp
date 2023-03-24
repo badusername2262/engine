@@ -51,6 +51,7 @@ namespace Graphics
 	        std::cout << "failed to initialized glfw!" << std::endl;
 	        return false;
 	    }
+        glfwWindowHint(GLFW_RESIZABLE, false);
         window = glfwCreateWindow(width, height, title, NULL, NULL);
         if(!window)
 	    {

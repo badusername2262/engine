@@ -13,18 +13,18 @@ using namespace Graphics;
 int main() 
 {
     //creating the window
-    Window window("title", 1920, 1080);
+    Window window("title", 960, 540);
     glClearColor(1.0, 1.0, 1.0, 1.0);
 
     //creation of shaders and projection matrix
     Shader shader("../resources/Shaders/VertShader", "../resources/Shaders/FragShader");
     shader.bind();
-	Camera ortho = Camera::Orthographic(0, 960, 0, 520, 0, 1);
+	Camera ortho = Camera::Orthographic(0, 960, 0, 540, 0, 1);
 	shader.setUniformMat4("pr_matrix", ortho);
 	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(480, 270, 0)));
     
     GLuint smile = Utils::LoadTexture("c:/engine/resources/textures/ahhh.jpg");
-    GLuint smile2 = Utils::LoadTexture("c:/engine/resources/textures/smile2.png");
+    GLuint smile2 = Utils::LoadTexture("c:/engine/resources/textures/smile.png");
     
     auto loc = shader.getUniformLocation("u_Textures");
     int samplers[2] = {1, 0};
