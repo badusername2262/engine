@@ -44,7 +44,7 @@ namespace Graphics
     {
         glfwSetErrorCallback(glfw_error_callback);
 
-        const char* glsl_version = "#version 460";
+        const char* glsl_version = "#version 450";
 
         if(!glfwInit())
 	    {
