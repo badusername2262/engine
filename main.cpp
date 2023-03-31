@@ -23,8 +23,8 @@ int main()
 	shader.setUniformMat4("pr_matrix", ortho);
 	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(480, 270, 0)));
     
-    GLuint smile = Utils::LoadTexture("c:/engine/resources/textures/ahhh.jpg");
-    GLuint smile2 = Utils::LoadTexture("c:/engine/resources/textures/smile.png");
+    GLuint smile = Utils::LoadTexture("../resources/textures/ahhh.jpg");
+    GLuint smile2 = Utils::LoadTexture("../resources/textures/smile.png");
     
     auto loc = shader.getUniformLocation("u_Textures");
     int samplers[2] = {1, 0};
