@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef CAMERA_H
+#define CAMERA_H
+
+#include <cstring>
 #include <glm/glm.hpp>
 
 namespace Graphics {
@@ -23,3 +27,5 @@ namespace Graphics {
 	};
 	
 }
+
+#endif // CAMERA_H

@@ -6,7 +6,7 @@
 #include "src/Buffers/indexbuffer.h"
 #include "src/Buffers/vertexarray.h"
 
-#include "include/SFML/Audio.hpp"
+#include <SFML/Audio.hpp>
 
 using namespace Graphics;
 
@@ -95,7 +95,6 @@ int main()
     double deltaTime = 0, nowTime = 0;
     int frames = 0 , updates = 0;
 
-    //for mouse positioning
     double x, y;
     float volume = 0;
 

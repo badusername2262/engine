@@ -46,49 +46,51 @@ namespace Graphics
 
         const char* glsl_version = "#version 450";
 
-        if(!glfwInit())
-	    {
-	        std::cout << "failed to initialized glfw!" << std::endl;
-	        return false;
-	    }
+        if (!glfwInit())
+        {
+            std::cout << "failed to initialize glfw!" << std::endl;
+            return false;
+        }
+
         glfwWindowHint(GLFW_RESIZABLE, false);
         window = glfwCreateWindow(width, height, title, NULL, NULL);
-        if(!window)
-	    {
-	        std::cout << "Failed to create window!" << std::endl;
-	        return false;
-	    }
-	    glfwMakeContextCurrent(window);
+        if (!window)
+        {
+            std::cout << "Failed to create window!" << std::endl;
+            glfwTerminate();
+            return false;
+        }
+
+        glfwMakeContextCurrent(window);
         glfwSetWindowUserPointer(window, this);
         glfwSetWindowSizeCallback(window, window_resize);
         glfwSetKeyCallback(window, key_callback);
         glfwSetMouseButtonCallback(window, mouse_button_callback);
         glfwSetCursorPosCallback(window, cursor_position_callback);
 
-	    glewExperimental=GL_TRUE;
-	    GLenum err=glewInit();
-	    if(err!=GLEW_OK)
-	    {
-	        glfwTerminate();
-	        std::cout<<"glewInit failed, aborting."<<std::endl;
-	    }
+        glewExperimental = GL_TRUE;
+        GLenum err = glewInit();
+        if (err != GLEW_OK)
+        {
+            std::cout << "glewInit failed, aborting." << std::endl;
+            glfwTerminate();
+            return false;
+        }
 
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
-	    ImGuiIO& io = ImGui::GetIO(); (void)io;
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
         ImGui::StyleColorsDark();
 
-	    ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glsl_version);
 
-	return true;
+        return true;
     }
 
     bool Window::isKeyPressed(unsigned int keycode)
     {
-        if (keycode >= MAX_KEYS)
-            return false;
-
+        assert(keycode < MAX_KEYS);
         return Keys[keycode];
     }
 
@@ -125,6 +127,7 @@ namespace Graphics
 
     void window_resize(GLFWwindow*, int width, int height)
     {
+        assert(width > 0 && height > 0);
         glViewport(0, 0, width, height);
     }
 

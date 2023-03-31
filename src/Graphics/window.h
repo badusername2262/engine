@@ -7,14 +7,9 @@
 #include <imgui/imgui_impl_glfw.hpp>
 #include <imgui/imgui_impl_opengl3.hpp>
 
-#include <SFML/Audio.hpp>
-
 #include <iostream>
 
 namespace Graphics {
-
-#define MAX_KEYS    1024
-#define MAX_BUTTONS 32
 
     class Window
     {
@@ -25,6 +20,8 @@ namespace Graphics {
         GLFWwindow* window;
         bool  closed;
     
+        static constexpr int MAX_KEYS = GLFW_KEY_LAST + 1;
+        static constexpr int MAX_BUTTONS = GLFW_MOUSE_BUTTON_LAST + 1;
         static bool Keys[MAX_KEYS];
         static bool mouseButtons[MAX_BUTTONS];
         static double mx, my;

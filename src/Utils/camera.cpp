@@ -2,16 +2,12 @@
 
 namespace Graphics {
 
-    Camera::Camera()
-    {
-        for (int i = 0; i < 4 * 4; i++)
-            elements[i] = 0.0f;
+    Camera::Camera() {
+        memset(elements, 0, sizeof(elements));
     }
 
-    Camera::Camera(float diagonal)
-    {
-        for (int i = 0; i < 4 * 4; i++)
-            elements[i] = 0.0f;
+    Camera::Camera(float diagonal) {
+        memset(elements, 0, sizeof(elements));
 
         elements[0 + 0 * 4] = 1.0f;
         elements[1 + 1 * 4] = 1.0f;
@@ -28,20 +24,20 @@ namespace Graphics {
     {
         Camera result(1.0f);
 
-        result.elements[0 + 0 * 4] = 2.0f / (right - left);
-        result.elements[1 + 1 * 4] = 2.0f / (top - bottom);
-        result.elements[2 + 2 * 4] = 2.0f / (near - far);
+        result.elements[0] = 2.0f / (right - left);
+        result.elements[5] = 2.0f / (top - bottom);
+        result.elements[10] = 2.0f / (near - far);
 
-        result.elements[0 + 3 * 4] = (left + right) / (left - right);
-        result.elements[1 + 3 * 4] = (bottom + top) / (bottom - top);
-        result.elements[2 + 3 * 4] = (far + near) / (far - near);
+        result.elements[12] = (left + right) / (left - right);
+        result.elements[13] = (bottom + top) / (bottom - top);
+        result.elements[14] = (far + near) / (far - near);
 
         return result;
     }
     
     Camera Camera::Perspective(float fovy, float aspect, float near, float far)
     {
-        assert(glm::abs(aspect - std::numeric_limits<float>::epsilon()) > 0.0f);
+        assert(fabs(aspect - std::numeric_limits<float>::epsilon()) > 0.0f);
         const float tanHalfFovy = tan(fovy / 2.0f);
 
         Camera result(1.0f);
@@ -70,10 +66,10 @@ namespace Graphics {
     {
         Camera result(1.0f);
 
-        float r = glm::radians(angle);
-        float c = cos(r);
-        float s = sin(r);
-        float omc = 1.0f - c;
+        const float r = glm::radians(angle);
+        const float c = cos(r);
+        const float s = sin(r);
+        const float omc = 1.0f - c;
 
         float x = axis.x;
         float y = axis.y;
