@@ -5,10 +5,65 @@
 #include "src/Buffers/buffer.h"
 #include "src/Buffers/indexbuffer.h"
 #include "src/Buffers/vertexarray.h"
+#include <array>
+#include <string>
 
 #include <SFML/Audio.hpp>
 
 using namespace Graphics;
+
+struct vec2
+{
+    float x, y;
+};
+
+struct vec3
+{
+    float x, y, z;
+};
+
+struct vec4
+{
+    float x, y, z, w;
+};
+
+struct Vertex
+{
+    vec3 Position;
+    vec4 Colour;
+    vec2 TexCoords;
+    float TexID;
+};
+
+static std::array<Vertex, 4> CreatQuad(float x, float y, float TextureID, float size)
+{
+
+    Vertex v0;
+    v0.Position = { x, y, 0.0f };
+    v0.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
+    v0.TexCoords = { 0.0f, 0.0f };
+    v0.TexID = TextureID;
+
+    Vertex v1;
+    v1.Position = { x + size, y, 0.0f };
+    v1.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
+    v1.TexCoords = { 1.0f, 0.0f };
+    v1.TexID = TextureID;
+
+    Vertex v2;
+    v2.Position = { x + size, y + size, 0.0f };
+    v2.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
+    v2.TexCoords = { 1.0f, 1.0f };
+    v2.TexID = TextureID;
+
+    Vertex v3;
+    v3.Position = { x, y + size, 0.0f };
+    v3.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
+    v3.TexCoords = { 0.0f, 1.0f };
+    v3.TexID = TextureID;
+
+    return { v0, v1, v2, v3 };
+}
 
 int main() 
 {
@@ -19,9 +74,9 @@ int main()
     //creation of shaders and projection matrix
     Shader shader("../resources/Shaders/VertShader", "../resources/Shaders/FragShader");
     shader.bind();
-	Camera ortho = Camera::Orthographic(0, 960, 0, 540, 0, 1);
+	Camera ortho = Camera::Orthographic(0, 16, 0, 9, 0, 1);
 	shader.setUniformMat4("pr_matrix", ortho);
-	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(480, 270, 0)));
+	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(8, 4.5, 0)));
     
     GLuint smile = Utils::LoadTexture("../resources/textures/ahhh.jpg");
     GLuint smile2 = Utils::LoadTexture("../resources/textures/smile.png");
@@ -29,18 +84,6 @@ int main()
     auto loc = shader.getUniformLocation("u_Textures");
     int samplers[2] = {1, 0};
     shader.setUnuform1iV(loc, 2, samplers);
-
-    float verticies[] = {
-        -250.0f, -100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 0.0f, 0.0f,
-        -50.0f, -100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 0.0f, 0.0f,
-        -50.0f,  100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 1.0f, 0.0f,
-        -250.0f,  100.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 1.0f, 0.0f,
-
-         50.0f, -100.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 0.0f, 1.0f,
-         250.0f, -100.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 0.0f, 1.0f,
-         250.0f,  100.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 1.0f, 1.0f,
-         50.0f,  100.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 1.0f, 1.0f
-    };
 
     GLuint QuaidVA;
     GLuint QuaidVB;
@@ -51,19 +94,19 @@ int main()
 
     glCreateBuffers(1, &QuaidVB);
     glBindBuffer(GL_ARRAY_BUFFER, QuaidVB);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 1000, nullptr, GL_DYNAMIC_DRAW);
 
     glEnableVertexArrayAttrib(QuaidVB, 0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
 
     glEnableVertexArrayAttrib(QuaidVB, 1);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void*)12);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Colour));
 
     glEnableVertexArrayAttrib(QuaidVB, 2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void*)28);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
 
     glEnableVertexArrayAttrib(QuaidVB, 3);
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void*)36);
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexID));
 
     uint32_t indices[] = {
         0, 1, 2, 2, 3, 0,
@@ -97,6 +140,7 @@ int main()
 
     double x, y;
     float volume = 0;
+    float QuadPosition[2] = { -5.5, -2.5 };
 
     while (!window.Closed())
     {
@@ -119,14 +163,25 @@ int main()
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Text("mouse X:%f, mouse Y:%f", (float)(x * 960.0f / 960.0f), (float)(540.0f - y * 540.0f / 540.0f));
         ImGui::SliderFloat("Volume", &volume, 0, 100);
+        ImGui::DragFloat2("Quad Position", QuadPosition, 0.1f);
         ImGui::End();
 
-        shader.bind();
+        // Set Dynamic Vertex Buffer
+
+        auto q0 = CreatQuad(QuadPosition[0], QuadPosition[1], 0.0f, 5.0f);
+        auto q1 = CreatQuad(0.5f, -2.5f, 1.0f, 5.0f);
+
+        Vertex verticies[8];
+        memcpy(verticies, q0.data(), q0.size() * sizeof(Vertex));
+        memcpy(verticies + q0.size(), q1.data(), q1.size() * sizeof(Vertex));
+
+        glBindBuffer(GL_ARRAY_BUFFER, QuaidVB);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(verticies), verticies);
+
         glBindVertexArray(QuaidVA);
         glBindTextureUnit(0, smile);
         glBindTextureUnit(1, smile2);
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
-        shader.unbind();
 
         //fixed update
         while (deltaTime >= 1.0){
