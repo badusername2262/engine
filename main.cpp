@@ -5,65 +5,11 @@
 #include "src/Buffers/buffer.h"
 #include "src/Buffers/indexbuffer.h"
 #include "src/Buffers/vertexarray.h"
-#include <array>
-#include <string>
+#include "src/Renderers/renderer.h"
 
 #include <SFML/Audio.hpp>
 
 using namespace Graphics;
-
-struct vec2
-{
-    float x, y;
-};
-
-struct vec3
-{
-    float x, y, z;
-};
-
-struct vec4
-{
-    float x, y, z, w;
-};
-
-struct Vertex
-{
-    vec3 Position;
-    vec4 Colour;
-    vec2 TexCoords;
-    float TexID;
-};
-
-static std::array<Vertex, 4> CreatQuad(float x, float y, float TextureID, float size)
-{
-
-    Vertex v0;
-    v0.Position = { x, y, 0.0f };
-    v0.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
-    v0.TexCoords = { 0.0f, 0.0f };
-    v0.TexID = TextureID;
-
-    Vertex v1;
-    v1.Position = { x + size, y, 0.0f };
-    v1.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
-    v1.TexCoords = { 1.0f, 0.0f };
-    v1.TexID = TextureID;
-
-    Vertex v2;
-    v2.Position = { x + size, y + size, 0.0f };
-    v2.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
-    v2.TexCoords = { 1.0f, 1.0f };
-    v2.TexID = TextureID;
-
-    Vertex v3;
-    v3.Position = { x, y + size, 0.0f };
-    v3.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
-    v3.TexCoords = { 0.0f, 1.0f };
-    v3.TexID = TextureID;
-
-    return { v0, v1, v2, v3 };
-}
 
 int main() 
 {
@@ -79,7 +25,7 @@ int main()
 	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(8, 4.5, 0)));
     
     GLuint smile = Utils::LoadTexture("../resources/textures/ahhh.jpg");
-    GLuint smile2 = Utils::LoadTexture("../resources/textures/smile.png");
+    GLuint smile2 = Utils::LoadTexture("../resources/game-textures/RPGpack_sheet_2X.png");
     
     auto loc = shader.getUniformLocation("u_Textures");
     int samplers[2] = {1, 0};
