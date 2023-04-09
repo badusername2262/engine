@@ -113,6 +113,16 @@ int main()
         ImGui::DragFloat2("Quad Position", (float*)&QuadPosition, 0.1f);
         ImGui::End();
 
+        if (window.isKeyPressed(GLFW_KEY_UP))
+        {
+            QuadPosition.y = QuadPosition.y + 0.01 * deltaTime;
+        }
+        
+        if (window.isKeyPressed(GLFW_KEY_DOWN))
+        {
+            QuadPosition.y = QuadPosition.y - 0.01 * deltaTime;
+        }        
+
         auto q0 = CreatQuad(QuadPosition, glm::vec2(3.0f, 5.0f), 0.0f);
         auto q1 = CreatQuad(glm::vec2(0.5f, 0.5f), glm::vec2(2.0f, 2.0f), 1.0f);
 
@@ -132,9 +142,9 @@ int main()
         while (deltaTime >= 1.0){
             updates++;
             deltaTime--;
-            music.setVolume(volume);
         }
         //rendering to the screen
+        music.setVolume(volume);
 		ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         window.Update();
