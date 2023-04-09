@@ -7,7 +7,7 @@ in vec4 out_pos;
 in vec2 out_TexCoord;
 in float out_TexIndex;
 
-uniform sampler2D u_Textures[2];
+uniform sampler2D u_Textures[31];
 
 void main()
 {

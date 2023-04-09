@@ -24,12 +24,12 @@ int main()
 	shader.setUniformMat4("pr_matrix", ortho);
 	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(8, 4.5, 0)));
     
-    GLuint smile = Utils::LoadTexture("../resources/textures/ahhh.jpg");
-    GLuint smile2 = Utils::LoadTexture("../resources/game-textures/RPGpack_sheet_2X.png");
+    GLuint smile = Utils::LoadTexture("../resources/textures/smile.png");
+    GLuint smile2 = Utils::LoadTexture("../resources/textures/ahhh.jpg");
     
     auto loc = shader.getUniformLocation("u_Textures");
-    int samplers[2] = {1, 0};
-    shader.setUnuform1iV(loc, 2, samplers);
+    int samplers[31] = {1, 0};
+    shader.setUnuform1iV(loc, 31, samplers);
 
     GLuint QuaidVA;
     GLuint QuaidVB;
@@ -43,20 +43,21 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 1000, nullptr, GL_DYNAMIC_DRAW);
 
     glEnableVertexArrayAttrib(QuaidVB, 0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Position));
 
     glEnableVertexArrayAttrib(QuaidVB, 1);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Colour));
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Colour));
 
     glEnableVertexArrayAttrib(QuaidVB, 2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_TexCoords));
 
     glEnableVertexArrayAttrib(QuaidVB, 3);
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexID));
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_TexID));
 
     uint32_t indices[] = {
         0, 1, 2, 2, 3, 0,
-        4, 5, 6, 6, 7, 4
+        4, 5, 6, 6, 7, 4,
+        8, 9, 10, 10, 11, 8
     };
 
     glCreateBuffers(1, &QuaidIB);
@@ -85,8 +86,8 @@ int main()
     int frames = 0 , updates = 0;
 
     double x, y;
-    float volume = 0;
-    float QuadPosition[2] = { -5.5, -2.5 };
+    int volume = 0;
+    glm::vec2 QuadPosition = { -5.5, -2.5 };
 
     while (!window.Closed())
     {
@@ -108,18 +109,16 @@ int main()
         ImGui::Begin("FPS Checker.");
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Text("mouse X:%f, mouse Y:%f", (float)(x * 960.0f / 960.0f), (float)(540.0f - y * 540.0f / 540.0f));
-        ImGui::SliderFloat("Volume", &volume, 0, 100);
-        ImGui::DragFloat2("Quad Position", QuadPosition, 0.1f);
+        ImGui::SliderInt("Volume", &volume, 0, 100);
+        ImGui::DragFloat2("Quad Position", (float*)&QuadPosition, 0.1f);
         ImGui::End();
 
-        // Set Dynamic Vertex Buffer
+        auto q0 = CreatQuad(QuadPosition, glm::vec2(3.0f, 5.0f), 0.0f);
+        auto q1 = CreatQuad(glm::vec2(0.5f, 0.5f), glm::vec2(2.0f, 2.0f), 1.0f);
 
-        auto q0 = CreatQuad(QuadPosition[0], QuadPosition[1], 0.0f, 5.0f);
-        auto q1 = CreatQuad(0.5f, -2.5f, 1.0f, 5.0f);
-
-        Vertex verticies[8];
+        Vertex verticies[2 * 4];
         memcpy(verticies, q0.data(), q0.size() * sizeof(Vertex));
-        memcpy(verticies + q0.size(), q1.data(), q1.size() * sizeof(Vertex));
+        memcpy(verticies + 4, q1.data(), q1.size() * sizeof(Vertex));
 
         glBindBuffer(GL_ARRAY_BUFFER, QuaidVB);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(verticies), verticies);

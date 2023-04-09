@@ -1,6 +1,3 @@
-#include "../Buffers/buffer.h"
-#include "../Buffers/indexbuffer.h"
-#include "../Buffers/vertexarray.h"
 #include "../Graphics/shader.h"
 #include "../../include/glm/glm.hpp"
 
@@ -8,38 +5,38 @@
 #include <string>
 
 struct Vertex {
-glm::vec3 Position;
-glm::vec4 Colour;
-glm::vec2 TexCoords;
-float TexID;
+glm::vec3 m_Position;
+glm::vec4 m_Colour;
+glm::vec2 m_TexCoords;
+float m_TexID;
 };
 
-static std::array<Vertex, 4> CreatQuad(float x, float y, float TextureID, float size)
+static std::array<Vertex, 4> CreatQuad(glm::vec2 Position, glm::vec2 Size, float TextureID)
 {
 
     Vertex v0;
-    v0.Position = { x, y, 0.0f };
-    v0.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
-    v0.TexCoords = { 0.0f, 0.0f };
-    v0.TexID = TextureID;
+    v0.m_Position = { Position.x, Position.y, 0.0f };
+    v0.m_Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
+    v0.m_TexCoords = { 0.0f, 0.0f };
+    v0.m_TexID = TextureID;
 
     Vertex v1;
-    v1.Position = { x + size, y, 0.0f };
-    v1.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
-    v1.TexCoords = { 1.0f, 0.0f };
-    v1.TexID = TextureID;
+    v1.m_Position = { Position.x + Size.x, Position.y, 0.0f };
+    v1.m_Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
+    v1.m_TexCoords = { 1.0f, 0.0f };
+    v1.m_TexID = TextureID;
 
     Vertex v2;
-    v2.Position = { x + size, y + size, 0.0f };
-    v2.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
-    v2.TexCoords = { 1.0f, 1.0f };
-    v2.TexID = TextureID;
+    v2.m_Position = { Position.x + Size.x, Position.y + Size.y, 0.0f };
+    v2.m_Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
+    v2.m_TexCoords = { 1.0f, 1.0f };
+    v2.m_TexID = TextureID;
 
     Vertex v3;
-    v3.Position = { x, y + size, 0.0f };
-    v3.Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
-    v3.TexCoords = { 0.0f, 1.0f };
-    v3.TexID = TextureID;
+    v3.m_Position = { Position.x, Position.y + Size.y, 0.0f };
+    v3.m_Colour = { 0.18f, 0.6f, 0.96f, 1.0f };
+    v3.m_TexCoords = { 0.0f, 1.0f };
+    v3.m_TexID = TextureID;
 
     return { v0, v1, v2, v3 };
 };
