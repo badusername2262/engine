@@ -2,14 +2,13 @@
 #include "src/Graphics/shader.h"
 #include "src/Utils/camera.h"
 
-#include "src/Buffers/buffer.h"
-#include "src/Buffers/indexbuffer.h"
-#include "src/Buffers/vertexarray.h"
 #include "src/Renderers/renderer.h"
 
 #include <SFML/Audio.hpp>
 
 using namespace Graphics;
+
+Clock Time;
 
 int main() 
 {
@@ -20,9 +19,9 @@ int main()
     //creation of shaders and projection matrix
     Shader shader("../resources/Shaders/VertShader", "../resources/Shaders/FragShader");
     shader.bind();
-	Camera ortho = Camera::Orthographic(0, 16, 0, 9, 0, 1);
+	Camera ortho = Camera::Orthographic(0, 960, 0, 540, 0, 1);
 	shader.setUniformMat4("pr_matrix", ortho);
-	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(8, 4.5, 0)));
+	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(480, 270, 0)));
     
     GLuint smile = Utils::LoadTexture("../resources/textures/smile.png");
     GLuint smile2 = Utils::LoadTexture("../resources/textures/ahhh.jpg");
@@ -67,7 +66,7 @@ int main()
 
     //Sound
     sf::Music music;
-    if(!music.openFromFile("C:/engine/resources/wav/Royalty Free Music Background Music Chill No Copyright Music Free To Use _ Unisho Reason - Z8phyR (320 kbps).wav"))
+    if(!music.openFromFile("../resources/wav/Epic Battle [Epic Music] by MokkaMusic _ Rome Battle-HQ.wav"))
         std::cout << "ERROR" << std::endl;
     music.setVolume(0);
     music.setLoop(true);
@@ -79,12 +78,6 @@ int main()
     static float f = 0.0f;
     static int counter = 0;
 
-    //values for the fixed update
-    static double limitFPS = 1.0 / 60.0;
-    double lastTime = glfwGetTime(), timer = lastTime;
-    double deltaTime = 0, nowTime = 0;
-    int frames = 0 , updates = 0;
-
     double x, y;
     int volume = 0;
     glm::vec2 QuadPosition = { -5.5, -2.5 };
@@ -92,11 +85,6 @@ int main()
     while (!window.Closed())
     {
         window.Clear();
-
-        //stuff to calculate delta time for the fixed update
-        nowTime = glfwGetTime();
-        deltaTime += (nowTime - lastTime) / limitFPS;
-        lastTime = nowTime;
 
         //begining the on screen gui
         ImGui_ImplOpenGL3_NewFrame();
@@ -115,16 +103,26 @@ int main()
 
         if (window.isKeyPressed(GLFW_KEY_UP))
         {
-            QuadPosition.y = QuadPosition.y + 0.01 * deltaTime;
+            QuadPosition.y = QuadPosition.y + 10 * Time.DeltaTime();
         }
         
         if (window.isKeyPressed(GLFW_KEY_DOWN))
         {
-            QuadPosition.y = QuadPosition.y - 0.01 * deltaTime;
-        }        
+            QuadPosition.y = QuadPosition.y - 10 * Time.DeltaTime();
+        }
+        
+        if (window.isKeyPressed(GLFW_KEY_RIGHT))
+        {
+            QuadPosition.x = QuadPosition.x + 10 * Time.DeltaTime();
+        }
 
-        auto q0 = CreatQuad(QuadPosition, glm::vec2(3.0f, 5.0f), 0.0f);
-        auto q1 = CreatQuad(glm::vec2(0.5f, 0.5f), glm::vec2(2.0f, 2.0f), 1.0f);
+        if (window.isKeyPressed(GLFW_KEY_LEFT))
+        {
+            QuadPosition.x = QuadPosition.x - 10 * Time.DeltaTime();
+        }
+
+        auto q0 = CreatQuad(QuadPosition, glm::vec2(100.0f, 100.0f), 0.0f);
+        auto q1 = CreatQuad(glm::vec2(0.5f, 0.5f), glm::vec2(100.0f, 100.0f), 1.0f);
 
         Vertex verticies[2 * 4];
         memcpy(verticies, q0.data(), q0.size() * sizeof(Vertex));
@@ -138,24 +136,12 @@ int main()
         glBindTextureUnit(1, smile2);
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
-        //fixed update
-        while (deltaTime >= 1.0){
-            updates++;
-            deltaTime--;
-        }
-        //rendering to the screen
         music.setVolume(volume);
+        
+        //rendering to the screen
 		ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         window.Update();
-
-        //debug stuff for fixed update
-        frames++;
-        if (glfwGetTime() - timer > 1.0) {
-            timer ++;
-            std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
-            updates = 0, frames = 0;
-        }    
     }
     //when the application closes it deletes all instances of its self to free up computer resources
     ImGui_ImplOpenGL3_Shutdown();

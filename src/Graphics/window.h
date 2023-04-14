@@ -44,4 +44,27 @@ namespace Graphics {
         friend void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
         friend void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
     };
+
+    struct Clock {
+        double lastTime;
+        const double frameTime = 1.0 / 60.0;
+        double accumulatedTime;
+        int updates;
+
+        Clock() : lastTime(glfwGetTime()), accumulatedTime(0.0) {}
+
+        double DeltaTime() {
+            double currentTime = glfwGetTime();
+            double deltaTime = (currentTime - lastTime) / frameTime;
+            lastTime = currentTime;
+            accumulatedTime += deltaTime;
+
+            if (accumulatedTime >= frameTime) {
+                accumulatedTime -= frameTime;
+                deltaTime = frameTime;
+            }
+
+            return deltaTime;
+        }
+    };
 }
