@@ -17,8 +17,7 @@ struct Utils {
 
 	static GLuint LoadTexture(const std::string& path) {
 		int w, h, bits;
-
-		stbi_set_flip_vertically_on_load(1);
+		
 		auto* pixels = stbi_load(path.c_str(), &w, &h, &bits, STBI_rgb_alpha);
 		GLuint textureID;
 		glCreateTextures(GL_TEXTURE_2D, 1, &textureID);

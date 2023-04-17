@@ -2,13 +2,14 @@
 #include "src/Graphics/shader.h"
 #include "src/Utils/camera.h"
 
-#include "src/Renderers/renderer.h"
+#include "src/Renderers/quads.h"
+#include "src/Utils/collition.h"
 
 #include <SFML/Audio.hpp>
 
 using namespace Graphics;
 
-Clock Time;
+Clocks Time;
 
 int main() 
 {
@@ -19,10 +20,13 @@ int main()
     //creation of shaders and projection matrix
     Shader shader("../resources/Shaders/VertShader", "../resources/Shaders/FragShader");
     shader.bind();
-	Camera ortho = Camera::Orthographic(0, 960, 0, 540, 0, 1);
+	Camera ortho = Camera::Orthographic(0, 960, 540, 0, 0, 1);
 	shader.setUniformMat4("pr_matrix", ortho);
 	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(480, 270, 0)));
     
+    AABB player1;
+    AABB player2;
+
     GLuint smile = Utils::LoadTexture("../resources/textures/smile.png");
     GLuint smile2 = Utils::LoadTexture("../resources/textures/ahhh.jpg");
     
@@ -34,6 +38,10 @@ int main()
     GLuint QuaidVB;
     GLuint QuaidIB;
 
+    glBindVertexArray(QuaidVA);
+    glBindTextureUnit(0, smile);
+    glBindTextureUnit(1, smile2);
+
     glCreateVertexArrays(1, &QuaidVA);
     glBindVertexArray(QuaidVA);
 
@@ -42,7 +50,7 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 1000, nullptr, GL_DYNAMIC_DRAW);
 
     glEnableVertexArrayAttrib(QuaidVB, 0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Position));
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Position));
 
     glEnableVertexArrayAttrib(QuaidVB, 1);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Colour));
@@ -55,8 +63,7 @@ int main()
 
     uint32_t indices[] = {
         0, 1, 2, 2, 3, 0,
-        4, 5, 6, 6, 7, 4,
-        8, 9, 10, 10, 11, 8
+        4, 5, 6, 6, 7, 4
     };
 
     glCreateBuffers(1, &QuaidIB);
@@ -103,26 +110,55 @@ int main()
 
         if (window.isKeyPressed(GLFW_KEY_UP))
         {
-            QuadPosition.y = QuadPosition.y + 10 * Time.DeltaTime();
+            QuadPosition.y = QuadPosition.y - 200 * Time.DeltaTime();
         }
         
         if (window.isKeyPressed(GLFW_KEY_DOWN))
         {
-            QuadPosition.y = QuadPosition.y - 10 * Time.DeltaTime();
+            QuadPosition.y = QuadPosition.y + 200 * Time.DeltaTime();
         }
         
         if (window.isKeyPressed(GLFW_KEY_RIGHT))
         {
-            QuadPosition.x = QuadPosition.x + 10 * Time.DeltaTime();
+            QuadPosition.x = QuadPosition.x + 200 * Time.DeltaTime();
         }
 
         if (window.isKeyPressed(GLFW_KEY_LEFT))
         {
-            QuadPosition.x = QuadPosition.x - 10 * Time.DeltaTime();
+            QuadPosition.x = QuadPosition.x - 200 * Time.DeltaTime();
         }
 
         auto q0 = CreatQuad(QuadPosition, glm::vec2(100.0f, 100.0f), 0.0f);
+        player1.minX = QuadPosition.x;
+        player1.maxX = QuadPosition.x + 100.0f;
+        player1.minY = QuadPosition.y;
+        player1.maxY = QuadPosition.y + 100;
+
         auto q1 = CreatQuad(glm::vec2(0.5f, 0.5f), glm::vec2(100.0f, 100.0f), 1.0f);
+        player2.minX = 0.5f;
+        player2.maxX = 0.5f + 100.0f;
+        player2.minY = 0.5f;
+        player2.maxY = 0.5f + 100;
+
+        CollisionSide side = checkAABBCollision(player1, player2);
+
+        switch (side) {
+            case Top:
+            
+            break;
+        case Bottom:
+            
+            break;
+        case Left:
+            
+            break;
+        case Right:
+            
+            break;
+        case None:
+            
+            break;
+        }
 
         Vertex verticies[2 * 4];
         memcpy(verticies, q0.data(), q0.size() * sizeof(Vertex));
@@ -131,9 +167,7 @@ int main()
         glBindBuffer(GL_ARRAY_BUFFER, QuaidVB);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(verticies), verticies);
 
-        glBindVertexArray(QuaidVA);
-        glBindTextureUnit(0, smile);
-        glBindTextureUnit(1, smile2);
+
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
         music.setVolume(volume);

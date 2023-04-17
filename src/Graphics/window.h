@@ -3,9 +3,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <imgui/imgui.hpp>
-#include <imgui/imgui_impl_glfw.hpp>
-#include <imgui/imgui_impl_opengl3.hpp>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
 
 #include <iostream>
 
@@ -45,13 +45,12 @@ namespace Graphics {
         friend void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
     };
 
-    struct Clock {
+    struct Clocks {
         double lastTime;
         const double frameTime = 1.0 / 60.0;
         double accumulatedTime;
-        int updates;
 
-        Clock() : lastTime(glfwGetTime()), accumulatedTime(0.0) {}
+        Clocks() : lastTime(glfwGetTime()), accumulatedTime(0.0) {}
 
         double DeltaTime() {
             double currentTime = glfwGetTime();
