@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(engine VERSION 0.1.0)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin/x64)
 
-link_directories(${CMAKE_SOURCE_DIR}/lib)
+link_directories(${CMAKE_SOURCE_DIR}/lib/windows/x64/)
 
 find_package(OpenGL REQUIRED)
 
-set(LIBS glfw3 opengl32 glew32 ImGui sfml-audio sfml-system FLAC freetype ogg openal32 vorbis vorbisenc vorbisfile)
+set(LIBS glfw3 opengl32 glew32 ImGui sfml-audio-d sfml-system-d FLAC freetype ogg openal32 vorbis vorbisenc vorbisfile)
 
 set(Engine_HEADERS src/Buffers/
                    src/Graphics/
@@ -19,6 +19,3 @@ add_executable(engine ${Engine_SOURCES} bin/engine.rc)
 
 target_link_libraries(engine ${LIBS})
 target_include_directories(engine PRIVATE include/ ${Engine_HEADERS})
-
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

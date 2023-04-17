@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2023 Laurent Gomila (laurent@sfml-dev.org)
+// Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -22,15 +22,15 @@
 //
 ////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef SFML_TCPLISTENER_HPP
+#define SFML_TCPLISTENER_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Network/Export.hpp>
-
-#include <SFML/Network/IpAddress.hpp>
 #include <SFML/Network/Socket.hpp>
+#include <SFML/Network/IpAddress.hpp>
 
 
 namespace sf
@@ -44,6 +44,7 @@ class TcpSocket;
 class SFML_NETWORK_API TcpListener : public Socket
 {
 public:
+
     ////////////////////////////////////////////////////////////
     /// \brief Default constructor
     ///
@@ -73,10 +74,6 @@ public:
     /// function is called, it will stop listening on the old
     /// port before starting to listen on the new port.
     ///
-    /// When providing sf::Socket::AnyPort as port, the listener
-    /// will request an available port from the system.
-    /// The chosen port can be retrieved by calling getLocalPort().
-    ///
     /// \param port    Port to listen on for incoming connection attempts
     /// \param address Address of the interface to listen on
     ///
@@ -85,7 +82,7 @@ public:
     /// \see accept, close
     ///
     ////////////////////////////////////////////////////////////
-    [[nodiscard]] Status listen(unsigned short port, const IpAddress& address = IpAddress::Any);
+    Status listen(unsigned short port, const IpAddress& address = IpAddress::Any);
 
     ////////////////////////////////////////////////////////////
     /// \brief Stop listening and close the socket
@@ -111,11 +108,14 @@ public:
     /// \see listen
     ///
     ////////////////////////////////////////////////////////////
-    [[nodiscard]] Status accept(TcpSocket& socket);
+    Status accept(TcpSocket& socket);
 };
 
 
 } // namespace sf
+
+
+#endif // SFML_TCPLISTENER_HPP
 
 
 ////////////////////////////////////////////////////////////
@@ -155,7 +155,7 @@ public:
 ///     if (listener.accept(client) == sf::Socket::Done)
 ///     {
 ///         // A new client just connected!
-///         std::cout << "New connection received from " << client.getRemoteAddress().value() << std::endl;
+///         std::cout << "New connection received from " << client.getRemoteAddress() << std::endl;
 ///         doSomethingWith(client);
 ///     }
 /// }

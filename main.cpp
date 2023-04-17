@@ -27,8 +27,8 @@ int main()
     AABB player1;
     AABB player2;
 
-    GLuint smile = Utils::LoadTexture("../resources/textures/smile.png");
-    GLuint smile2 = Utils::LoadTexture("../resources/textures/ahhh.jpg");
+    GLuint smile = Utils::LoadTexture("C:/Users/alexr/Desktop/engine/resources/textures/smile.png");
+    GLuint smile2 = Utils::LoadTexture("../../resources/textures/ahhh.jpg");
     
     auto loc = shader.getUniformLocation("u_Textures");
     int samplers[31] = {1, 0};
@@ -37,10 +37,6 @@ int main()
     GLuint QuaidVA;
     GLuint QuaidVB;
     GLuint QuaidIB;
-
-    glBindVertexArray(QuaidVA);
-    glBindTextureUnit(0, smile);
-    glBindTextureUnit(1, smile2);
 
     glCreateVertexArrays(1, &QuaidVA);
     glBindVertexArray(QuaidVA);
@@ -63,7 +59,7 @@ int main()
 
     uint32_t indices[] = {
         0, 1, 2, 2, 3, 0,
-        4, 5, 6, 6, 7, 4
+        4, 5, 6, 6, 7, 4,
     };
 
     glCreateBuffers(1, &QuaidIB);
@@ -73,7 +69,7 @@ int main()
 
     //Sound
     sf::Music music;
-    if(!music.openFromFile("../resources/wav/Epic Battle [Epic Music] by MokkaMusic _ Rome Battle-HQ.wav"))
+    if(!music.openFromFile("../../resources/wav/Epic Battle [Epic Music] by MokkaMusic _ Rome Battle-HQ.wav"))
         std::cout << "ERROR" << std::endl;
     music.setVolume(0);
     music.setLoop(true);
@@ -167,7 +163,9 @@ int main()
         glBindBuffer(GL_ARRAY_BUFFER, QuaidVB);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(verticies), verticies);
 
-
+        glBindVertexArray(QuaidVA);
+        glBindTextureUnit(0, smile);
+        glBindTextureUnit(1, smile2);
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
         music.setVolume(volume);
