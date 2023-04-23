@@ -62,7 +62,6 @@ namespace Graphics
         }
 
         glfwMakeContextCurrent(window);
-        glfwSwapInterval(1);
         glfwSetWindowUserPointer(window, this);
         glfwSetWindowSizeCallback(window, window_resize);
         glfwSetKeyCallback(window, key_callback);
@@ -117,7 +116,7 @@ namespace Graphics
 
     bool Window::Closed() const
     {
-        return glfwWindowShouldClose(window) == 1;
+        return glfwWindowShouldClose(window) == 0;
     }
 
     void Window::Update()

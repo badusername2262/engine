@@ -45,25 +45,16 @@ namespace Graphics {
         friend void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
     };
 
-    struct Clocks {
+    struct DeltaTime {
         double lastTime;
-        const double frameTime = 1.0 / 60.0;
-        double accumulatedTime;
+        double deltaTime;
 
-        Clocks() : lastTime(glfwGetTime()), accumulatedTime(0.0) {}
+        DeltaTime() : lastTime(glfwGetTime()), deltaTime(0.0) {}
 
-        double DeltaTime() {
+        void update() {
             double currentTime = glfwGetTime();
-            double deltaTime = (currentTime - lastTime) / frameTime;
+            deltaTime = currentTime - lastTime;
             lastTime = currentTime;
-            accumulatedTime += deltaTime;
-
-            if (accumulatedTime >= frameTime) {
-                accumulatedTime -= frameTime;
-                deltaTime = frameTime;
-            }
-
-            return deltaTime;
         }
     };
 }

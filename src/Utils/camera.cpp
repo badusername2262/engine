@@ -34,22 +34,6 @@ namespace Graphics {
 
         return result;
     }
-    
-    Camera Camera::Perspective(float fovy, float aspect, float near, float far)
-    {
-        assert(fabs(aspect - std::numeric_limits<float>::epsilon()) > 0.0f);
-        const float tanHalfFovy = tan(fovy / 2.0f);
-
-        Camera result(1.0f);
-
-        result.elements[0 + 0 * 4] = 1.0f / (aspect * tanHalfFovy);
-        result.elements[1 + 1 * 4] = 1.0f / (tanHalfFovy);
-        result.elements[2 + 2 * 4] = -(near - far) / (near - far);
-        result.elements[2 + 3 * 4] = 1.0f;
-        result.elements[3 + 2 * 4] = (2 * far * near) / (near - far);
-
-        return result;
-    }
 
     Camera Camera::translation(const glm::vec3& translation)
     {

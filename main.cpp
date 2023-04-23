@@ -9,7 +9,7 @@
 
 using namespace Graphics;
 
-Clocks Time;
+DeltaTime deltatime;
 
 int main() 
 {
@@ -31,7 +31,7 @@ int main()
     GLuint smile2 = Utils::LoadTexture("../resources/textures/ahhh.jpg");
     
     auto loc = shader.getUniformLocation("u_Textures");
-    int samplers[31] = {1, 0};
+    int samplers[31] = {0, 1};
     shader.setUnuform1iV(loc, 31, samplers);
 
     GLuint QuaidVA;
@@ -39,8 +39,8 @@ int main()
     GLuint QuaidIB;
 
     glBindVertexArray(QuaidVA);
-    glBindTextureUnit(0, smile);
-    glBindTextureUnit(1, smile2);
+    glBindTextureUnit(1, smile);
+    glBindTextureUnit(0, smile2);
 
     glCreateVertexArrays(1, &QuaidVA);
     glBindVertexArray(QuaidVA);
@@ -51,9 +51,6 @@ int main()
 
     glEnableVertexArrayAttrib(QuaidVB, 0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Position));
-
-    glEnableVertexArrayAttrib(QuaidVB, 1);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Colour));
 
     glEnableVertexArrayAttrib(QuaidVB, 2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_TexCoords));
@@ -89,9 +86,10 @@ int main()
     int volume = 0;
     glm::vec2 QuadPosition = { -5.5, -2.5 };
 
-    while (!window.Closed())
+    while (window.Closed())
     {
         window.Clear();
+        deltatime.update();
 
         //begining the on screen gui
         ImGui_ImplOpenGL3_NewFrame();
@@ -110,22 +108,22 @@ int main()
 
         if (window.isKeyPressed(GLFW_KEY_UP))
         {
-            QuadPosition.y = QuadPosition.y - 200 * Time.DeltaTime();
+            QuadPosition.y = QuadPosition.y - 200 * deltatime.deltaTime;
         }
         
         if (window.isKeyPressed(GLFW_KEY_DOWN))
         {
-            QuadPosition.y = QuadPosition.y + 200 * Time.DeltaTime();
+            QuadPosition.y = QuadPosition.y + 200 * deltatime.deltaTime;
         }
         
         if (window.isKeyPressed(GLFW_KEY_RIGHT))
         {
-            QuadPosition.x = QuadPosition.x + 200 * Time.DeltaTime();
+            QuadPosition.x = QuadPosition.x + 200 * deltatime.deltaTime;
         }
 
         if (window.isKeyPressed(GLFW_KEY_LEFT))
         {
-            QuadPosition.x = QuadPosition.x - 200 * Time.DeltaTime();
+            QuadPosition.x = QuadPosition.x - 200 * deltatime.deltaTime;
         }
 
         auto q0 = CreatQuad(QuadPosition, glm::vec2(100.0f, 100.0f), 0.0f);
