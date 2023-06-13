@@ -39,8 +39,8 @@ namespace Graphics {
         GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
         GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
 
-        std::string vertStrSource = Utils::read_file(vertp);
-        std::string fragStrSource = Utils::read_file(fragp);
+        std::string vertStrSource = read_file(vertp);
+        std::string fragStrSource = read_file(fragp);
 
         const char* vertSource = vertStrSource.c_str();
         const char* fragSource = fragStrSource.c_str();

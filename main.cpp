@@ -20,15 +20,11 @@ int main()
     //creation of shaders and projection matrix
     Shader shader("../resources/Shaders/VertShader", "../resources/Shaders/FragShader");
     shader.bind();
-	Camera ortho = Camera::Orthographic(0, 960, 540, 0, 0, 1);
-	shader.setUniformMat4("pr_matrix", ortho);
+	shader.setUniformMat4("pr_matrix", Camera::Orthographic(0, 960, 540, 0, 0, 1));
 	shader.setUniformMat4("ml_matrix", Camera::translation(glm::vec3(480, 270, 0)));
     
-    AABB player1;
-    AABB player2;
-
-    GLuint smile = Utils::LoadTexture("../resources/textures/smile.png");
-    GLuint smile2 = Utils::LoadTexture("../resources/textures/ahhh.jpg");
+    GLuint smile = LoadTexture("../resources/textures/Untitled.png");
+    GLuint oabfoba = Texture("../resources/textures/Untitled.png");
     
     auto loc = shader.getUniformLocation("u_Textures");
     int samplers[31] = {0, 1};
@@ -39,8 +35,7 @@ int main()
     GLuint QuaidIB;
 
     glBindVertexArray(QuaidVA);
-    glBindTextureUnit(1, smile);
-    glBindTextureUnit(0, smile2);
+    glBindTexture(GL_TEXTURE_2D, smile);
 
     glCreateVertexArrays(1, &QuaidVA);
     glBindVertexArray(QuaidVA);
@@ -52,11 +47,11 @@ int main()
     glEnableVertexArrayAttrib(QuaidVB, 0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Position));
 
-    glEnableVertexArrayAttrib(QuaidVB, 2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_TexCoords));
-
     glEnableVertexArrayAttrib(QuaidVB, 3);
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_TexID));
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_Colour));
+
+    glEnableVertexArrayAttrib(QuaidVB, 2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, m_UV));
 
     uint32_t indices[] = {
         0, 1, 2, 2, 3, 0,
@@ -66,7 +61,6 @@ int main()
     glCreateBuffers(1, &QuaidIB);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, QuaidIB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
 
     //Sound
     sf::Music music;
@@ -126,37 +120,8 @@ int main()
             QuadPosition.x = QuadPosition.x - 200 * deltatime.deltaTime;
         }
 
-        auto q0 = CreatQuad(QuadPosition, glm::vec2(100.0f, 100.0f), 0.0f);
-        player1.minX = QuadPosition.x;
-        player1.maxX = QuadPosition.x + 100.0f;
-        player1.minY = QuadPosition.y;
-        player1.maxY = QuadPosition.y + 100;
-
-        auto q1 = CreatQuad(glm::vec2(0.5f, 0.5f), glm::vec2(100.0f, 100.0f), 1.0f);
-        player2.minX = 0.5f;
-        player2.maxX = 0.5f + 100.0f;
-        player2.minY = 0.5f;
-        player2.maxY = 0.5f + 100;
-
-        CollisionSide side = checkAABBCollision(player1, player2);
-
-        switch (side) {
-            case Top:
-            
-            break;
-        case Bottom:
-            
-            break;
-        case Left:
-            
-            break;
-        case Right:
-            
-            break;
-        case None:
-            
-            break;
-        }
+        auto q0 = CreatQuad(QuadPosition, glm::vec2(100.0f, 100.0f), glm::vec2(1, 0));
+        auto q1 = CreatQuad(glm::vec2(0.5f, 0.5f), glm::vec2(100.0f, 100.0f), glm::vec2(0, 0));
 
         Vertex verticies[2 * 4];
         memcpy(verticies, q0.data(), q0.size() * sizeof(Vertex));

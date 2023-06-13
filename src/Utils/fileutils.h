@@ -1,35 +1,13 @@
 #pragma once
 #define STB_IMAGE_IMPLEMENTATION
 
-#include <stb_image/stb_image.h>
+#include <GL/glew.h>
 #include <fstream>
 #include <string>
 
+// File stuff
+std::string read_file(const std::string& filepath);
 
-struct Utils {
-
-	static std::string read_file(const std::string& filepath) {
-		return {
-		std::istreambuf_iterator<char>(std::ifstream(filepath).rdbuf()),
-		std::istreambuf_iterator<char>()
-		};
-	}
-
-	static GLuint LoadTexture(const std::string& path) {
-		int w, h, bits;
-		
-		auto* pixels = stbi_load(path.c_str(), &w, &h, &bits, STBI_rgb_alpha);
-		GLuint textureID;
-		glCreateTextures(GL_TEXTURE_2D, 1, &textureID);
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-
-		stbi_image_free(pixels);
-
-		return textureID;
-	}
-};
+// Textures
+GLuint LoadTexture(const std::string& path);
+GLuint Texture(const std::string& path);
